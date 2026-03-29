@@ -2,84 +2,67 @@
 import { useState, useEffect, useRef } from "react";
 
 const PROJECTS = [
-  { id:1, title:"Tasbeeh Max",          desc:"Spiritual companion for Muslims — Tasbeeh counter, Qibla direction, Prayer Times, Dua collections, offline Hive storage.",                          tech:["Flutter","Dart","Hive","Notifications"],          features:["Digital Counter","Qibla Finder","Prayer Times","Dua Library"],    accent:"#818cf8", top:"#6366f1", bot:"#9333ea", ui:"spiritual"  },
-  { id:2, title:"VPN Max & Shield VPN", desc:"Flutter VPN apps with fast server switching, connection monitoring, data usage tracking, and a polished modern UI.",                                  tech:["Flutter","Dart","Firebase","Networking"],          features:["Server Switching","Connection Monitor","Data Tracking","Modern UI"], accent:"#38bdf8", top:"#3b82f6", bot:"#06b6d4", ui:"vpn"       },
-  { id:3, title:"Video to Audio Converter", desc:"Advanced media converter — audio extraction, batch processing, live waveform playback, and ringtone maker with SIM assignment.",               tech:["Flutter","Dart","SharedPrefs","Media APIs"],       features:["Batch Convert","Waveform View","Ringtone Maker","Media Merge"],  accent:"#34d399", top:"#10b981", bot:"#0d9488", ui:"media"     },
-  { id:4, title:"Parcel Delivery App",  desc:"Full delivery platform with custom routes, provider & customer roles, real-time chat for negotiation, and admin dashboard.",                        tech:["Flutter","Dart","Firebase","Cloudinary"],          features:["Custom Routes","Dual Roles","Real-time Chat","Admin Panel"],    accent:"#fb923c", top:"#f97316", bot:"#ef4444", ui:"delivery"  },
-  { id:5, title:"BNPL E-Commerce App",  desc:"Buy Now Pay Later platform with flexible payment plans, COD support, instalment tracking, and full admin dashboard.",                                tech:["Flutter","Dart","Firebase","Stripe"],              features:["BNPL Plans","COD Support","Instalment Track","Admin Panel"],   accent:"#c084fc", top:"#a855f7", bot:"#ec4899", ui:"ecommerce" },
-  { id:6, title:"E-Commerce Mobile App",desc:"Feature-rich e-commerce app — product catalog, cart, order tracking, secure auth, and seamless payment integration.",                              tech:["Flutter","Dart","Firebase","Firestore"],            features:["Product Catalog","Cart System","Order Tracking","Secure Auth"],  accent:"#fbbf24", top:"#f59e0b", bot:"#f97316", ui:"ecommerce2"},
+  { id:1, title:"Tasbeeh Max",              desc:"Spiritual companion for Muslims — Tasbeeh counter, Qibla direction, Prayer Times, Dua collections, offline Hive storage.",                            tech:["Flutter","Dart","Hive","Notifications"], features:["Digital Counter","Qibla Finder","Prayer Times","Dua Library"],       accent:"#818cf8", top:"#6366f1", bot:"#9333ea", image:"/images/tasbeeh.png", pdf:"/pdf/tasbeeh.pdf" },
+  { id:2, title:"VPN Max",                  desc:"Production VPN app with dual ad-provider system (AdMob + Yandex), reward sessions, Russian localization, and premium server access unlocked by watching ads.", tech:["Flutter","Dart","Firebase","AdMob"],     features:["Reward Ad Session","Dual Ad Providers","Russian Locale","Premium Servers"], accent:"#38bdf8", top:"#3b82f6", bot:"#06b6d4", image:"/images/vpnmax.png", pdf:"/pdf/vpnmax.pdf" },
+  { id:3, title:"Video to Audio Converter", desc:"Advanced media converter — audio extraction, batch processing, live waveform playback, and ringtone maker with SIM assignment.",                       tech:["Flutter","Dart","SharedPrefs","Media APIs"],features:["Batch Convert","Waveform View","Ringtone Maker","Media Merge"],     accent:"#34d399", top:"#10b981", bot:"#0d9488", image:"/images/video.png", pdf:"/pdf/video.pdf" },
+  { id:4, title:"Parcel Delivery App",      desc:"Full delivery platform with custom routes, provider & customer roles, real-time chat for negotiation, and admin dashboard.",                           tech:["Flutter","Dart","Firebase","Cloudinary"],   features:["Custom Routes","Dual Roles","Real-time Chat","Admin Panel"],        accent:"#fb923c", top:"#f97316", bot:"#ef4444", image:"/images/parcel.png", pdf:"/pdf/parcel.pdf" },
+  { id:5, title:"BNPL E-Commerce App",      desc:"Buy Now Pay Later platform with flexible payment plans, COD support, instalment tracking, and full admin dashboard.",                                  tech:["Flutter","Dart","Firebase","Stripe"],       features:["BNPL Plans","COD Support","Instalment Track","Admin Panel"],        accent:"#c084fc", top:"#a855f7", bot:"#ec4899", image:"/images/BNPL.png", pdf:"/pdf/bnpl.pdf" },
+  { id:6, title:"Turbo VPN",                desc:"Multi-language VPN app where users watch ads to earn 1-hour reward sessions. Features Google Pay premium upgrade, API-driven server list, and session management.", tech:["Flutter","Dart","Google Pay","Firebase"], features:["Reward Ad Session","10 Languages","Google Pay","API Servers"], accent:"#34d399", top:"#059669", bot:"#0d9488", image:"/images/turbo.png", pdf:"/pdf/turbo.pdf" },
 ];
 
-function PhoneUI({ ui }: { ui: string }) {
-  const w = "rgba(255,255,255,";
-  switch (ui) {
-    case "spiritual": return (
-      <div className="flex flex-col items-center gap-2 px-3 pt-10">
-        <div style={{width:36,height:36,borderRadius:"50%",border:`2px solid ${w}0.3)`,display:"flex",alignItems:"center",justifyContent:"center"}}><div style={{width:20,height:20,borderRadius:"50%",background:w+"0.3)"}} /></div>
-        <div style={{height:6,width:64,borderRadius:3,background:w+"0.25)"}} />
-        <div style={{height:4,width:40,borderRadius:2,background:w+"0.15)"}} />
-        <div style={{width:80,height:80,borderRadius:"50%",border:`4px solid ${w}0.25)`,display:"flex",alignItems:"center",justifyContent:"center",marginTop:4}}>
-          <div style={{width:52,height:52,borderRadius:"50%",background:w+"0.2)",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{color:w+"0.9)",fontSize:10,fontWeight:700}}>99</span></div>
-        </div>
-        <div style={{display:"flex",gap:6,marginTop:4}}>{[0,1,2].map(k=><div key={k} style={{width:28,height:20,borderRadius:6,background:w+"0.15)"}} />)}</div>
-      </div>
-    );
-    case "vpn": return (
-      <div className="flex flex-col items-center gap-2 px-3 pt-10">
-        <div style={{height:6,width:64,borderRadius:3,background:w+"0.25)"}} />
-        <div style={{width:80,height:80,borderRadius:"50%",border:`4px solid ${w}0.2)`,display:"flex",alignItems:"center",justifyContent:"center",marginTop:4}}>
-          <div style={{width:52,height:52,borderRadius:"50%",background:w+"0.22)",display:"flex",alignItems:"center",justifyContent:"center"}}><div style={{width:18,height:22,border:`2px solid ${w}0.7)`,borderRadius:4}} /></div>
-        </div>
-        <div style={{height:4,width:48,borderRadius:2,background:w+"0.2)"}} />
-        <div style={{display:"flex",gap:5,marginTop:4}}>{[0,1,2,3].map(k=><div key={k} style={{width:18,height:22,borderRadius:5,background:w+"0.12)",border:`1px solid ${w}0.18)`}} />)}</div>
-      </div>
-    );
-    case "media": return (
-      <div className="flex flex-col gap-2 px-3 pt-10">
-        <div style={{width:"100%",height:28,borderRadius:8,background:w+"0.12)",display:"flex",alignItems:"center",padding:"0 8px",gap:6}}><div style={{width:16,height:16,borderRadius:4,background:w+"0.22)"}} /><div style={{flex:1,height:4,borderRadius:2,background:w+"0.2)"}} /></div>
-        <div style={{display:"flex",alignItems:"flex-end",gap:2,height:40,background:w+"0.06)",borderRadius:8,padding:"4px 8px"}}>{[3,6,4,9,5,8,4,7,3,6,8,5,4,7].map((h,k)=><div key={k} style={{flex:1,borderRadius:2,background:w+"0.45)",height:`${h*6}%`}} />)}</div>
-        <div className="grid grid-cols-2 gap-1">{[0,1,2,3].map(k=><div key={k} style={{height:22,borderRadius:6,background:w+"0.12)",display:"flex",alignItems:"center",padding:"0 6px",gap:4}}><div style={{width:8,height:8,borderRadius:2,background:w+"0.3)"}} /><div style={{flex:1,height:4,borderRadius:2,background:w+"0.2)"}} /></div>)}</div>
-      </div>
-    );
-    case "delivery": return (
-      <div className="flex flex-col gap-2 px-3 pt-10">
-        <div style={{width:"100%",height:64,borderRadius:10,background:w+"0.12)",position:"relative",overflow:"hidden"}}>
-          <div style={{position:"absolute",inset:0,display:"grid",gridTemplateColumns:"repeat(5,1fr)",gridTemplateRows:"repeat(4,1fr)",opacity:0.18}}>{Array.from({length:20}).map((_,k)=><div key={k} style={{border:`1px solid ${w}0.35)`}} />)}</div>
-          <div style={{position:"absolute",top:"50%",left:"50%",transform:"translate(-50%,-50%)",width:12,height:12,borderRadius:"50%",background:w+"0.85)"}} />
-        </div>
-        {[0,1].map(k=><div key={k} style={{height:26,borderRadius:8,background:w+"0.1)",display:"flex",alignItems:"center",padding:"0 10px",gap:8}}><div style={{width:8,height:8,borderRadius:"50%",background:w+"0.4)"}} /><div style={{flex:1,height:4,borderRadius:2,background:w+"0.2)"}} /><div style={{width:20,height:12,borderRadius:4,background:w+"0.22)"}} /></div>)}
-        <div style={{height:22,borderRadius:100,background:w+"0.25)",display:"flex",alignItems:"center",justifyContent:"center"}}><div style={{width:32,height:4,borderRadius:2,background:w+"0.55)"}} /></div>
-      </div>
-    );
-    default: return (
-      <div className="flex flex-col gap-2 px-3 pt-10">
-        <div style={{display:"flex",gap:4,alignItems:"center"}}><div style={{flex:1,height:6,borderRadius:3,background:w+"0.25)"}} /><div style={{width:20,height:20,borderRadius:5,background:w+"0.22)"}} /></div>
-        <div className="grid grid-cols-2 gap-1.5">{[0,1,2,3].map(k=><div key={k} style={{borderRadius:10,overflow:"hidden",background:w+"0.12)"}}><div style={{height:36,background:w+"0.18)"}} /><div style={{padding:6,display:"flex",flexDirection:"column",gap:3}}><div style={{height:4,width:"75%",borderRadius:2,background:w+"0.28)"}} /><div style={{height:3,width:"50%",borderRadius:2,background:w+"0.18)"}} /></div></div>)}</div>
-        <div style={{height:20,borderRadius:100,background:w+"0.25)",display:"flex",alignItems:"center",justifyContent:"center"}}><div style={{width:28,height:4,borderRadius:2,background:w+"0.55)"}} /></div>
-      </div>
-    );
-  }
-}
-
-function Phone({ p }: { p: typeof PROJECTS[0] }) {
-  const W=112, H=224, R=26, BW=2.5;
+/* ── App Screenshot component ─────────────────────────────────────────────── */
+function AppScreenshot({ p }: { p: typeof PROJECTS[0] }) {
   return (
-    <div style={{ position:"relative", width:W, height:H, flexShrink:0 }}>
-      <div style={{ position:"absolute", borderRadius:R+8, background:`radial-gradient(circle,${p.accent}55,transparent)`, width:W*1.5, height:H*0.35, bottom:-14, left:"50%", transform:"translateX(-50%)", filter:"blur(18px)" }} />
-      <div style={{ position:"absolute", inset:0, borderRadius:R, overflow:"hidden", background:"linear-gradient(145deg,#252838,#14172a,#1a1d30)", boxShadow:`0 0 0 1.5px rgba(255,255,255,0.10),0 20px 50px rgba(0,0,0,0.7),0 0 40px ${p.accent}28,inset 0 1px 0 rgba(255,255,255,0.09)` }}>
-        <div style={{ position:"absolute", top:BW, left:BW, right:BW, bottom:BW, borderRadius:R-BW, overflow:"hidden", background:`linear-gradient(160deg,${p.top},${p.bot})` }}>
-          <div style={{ position:"absolute", inset:0, background:"linear-gradient(135deg,rgba(255,255,255,0.16) 0%,transparent 45%)" }} />
-          <div style={{ position:"absolute", top:5, left:"50%", transform:"translateX(-50%)", zIndex:20, display:"flex", alignItems:"center", gap:5, padding:"3px 10px", borderRadius:100, background:"rgba(0,0,0,0.5)", backdropFilter:"blur(8px)" }}>
-            <div style={{ width:6, height:6, borderRadius:"50%", background:p.top, opacity:0.8 }} />
-            <div style={{ width:28, height:5, borderRadius:3, background:"rgba(255,255,255,0.22)" }} />
-          </div>
-          <div style={{ position:"absolute", inset:0 }}><PhoneUI ui={p.ui} /></div>
-          <div style={{ position:"absolute", bottom:5, left:"50%", transform:"translateX(-50%)", width:32, height:3, borderRadius:2, background:"rgba(255,255,255,0.3)" }} />
+    <div style={{ position:"relative", width:130, height:260, flexShrink:0 }}>
+
+      {/* Phone frame */}
+      <div style={{
+        position:"absolute", inset:0, zIndex:1,
+        borderRadius:32,
+        background:"linear-gradient(145deg,#2a2d3e,#13162a,#1c1f35)",
+        boxShadow:`0 0 0 1.5px rgba(255,255,255,0.11), 0 24px 56px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.1)`,
+      }}>
+        {/* Screen */}
+        <div style={{
+          position:"absolute", top:3, left:3, right:3, bottom:3,
+          borderRadius:29, overflow:"hidden",
+          background:"linear-gradient(180deg, rgba(10,14,24,0.96), rgba(17,24,39,0.92))",
+        }}>
+          <img
+            src={p.image}
+            alt={p.title}
+            style={{
+              position: "absolute",
+              inset: "0",
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+              objectPosition: "center top",
+              display: "block",
+              transform: "scale(1.08)",
+            }}
+          />
         </div>
-        <div style={{ position:"absolute", right:-2, top:44, width:2.5, height:20, borderRadius:"0 3px 3px 0", background:"rgba(255,255,255,0.14)" }} />
-        <div style={{ position:"absolute", left:-2, top:34, width:2.5, height:16, borderRadius:"3px 0 0 3px", background:"rgba(255,255,255,0.11)" }} />
-        <div style={{ position:"absolute", left:-2, top:55, width:2.5, height:16, borderRadius:"3px 0 0 3px", background:"rgba(255,255,255,0.11)" }} />
+        {/* Dynamic island */}
+        <div style={{
+          position:"absolute", top:7, left:"50%", transform:"translateX(-50%)",
+          zIndex:10, display:"flex", alignItems:"center", gap:5,
+          padding:"3px 10px", borderRadius:100,
+          background:"rgba(0,0,0,0.75)", backdropFilter:"blur(8px)",
+        }}>
+          <div style={{ width:5, height:5, borderRadius:"50%", background:p.accent, opacity:0.9 }}/>
+          <div style={{ width:22, height:4, borderRadius:2, background:"rgba(255,255,255,0.2)" }}/>
+        </div>
+        {/* Home indicator */}
+        <div style={{
+          position:"absolute", bottom:6, left:"50%", transform:"translateX(-50%)",
+          width:30, height:3, borderRadius:2, background:"rgba(255,255,255,0.3)", zIndex:10,
+        }}/>
       </div>
+      {/* Side buttons */}
+      <div style={{position:"absolute",right:-2,top:56,width:2.5,height:22,borderRadius:"0 3px 3px 0",background:"rgba(255,255,255,0.14)",zIndex:2}}/>
+      <div style={{position:"absolute",left:-2,top:44,width:2.5,height:16,borderRadius:"3px 0 0 3px",background:"rgba(255,255,255,0.11)",zIndex:2}}/>
+      <div style={{position:"absolute",left:-2,top:66,width:2.5,height:16,borderRadius:"3px 0 0 3px",background:"rgba(255,255,255,0.11)",zIndex:2}}/>
     </div>
   );
 }
@@ -332,6 +315,30 @@ export default function Projects() {
           color:var(--proj-muted); font-family:var(--font-display);
           pointer-events:none;
         }
+
+        .proj-design-btn {
+          margin-top: 16px;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          gap: 8px;
+          width: 100%;
+          min-height: 42px;
+          padding: 10px 14px;
+          border-radius: 12px;
+          text-decoration: none;
+          font-family: var(--font-display);
+          font-size: 11px;
+          font-weight: 700;
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
+          color: white;
+          transition: transform 0.25s ease, box-shadow 0.25s ease, opacity 0.25s ease;
+        }
+        .proj-design-btn:hover {
+          transform: translateY(-2px);
+          opacity: 0.96;
+        }
       `}</style>
 
       <section id="projects" ref={ref} className="relative py-24 overflow-hidden grid-bg"
@@ -384,7 +391,7 @@ export default function Projects() {
 
                         {/* Phone */}
                         <div style={{ flex:1, display:"flex", alignItems:"center", justifyContent:"center", padding:"24px 16px 16px", background:`radial-gradient(ellipse at 50% 80%,${p.accent}12,transparent)` }}>
-                          <Phone p={p}/>
+                          <AppScreenshot p={p}/>
                         </div>
 
                         {/* Separator */}
@@ -453,6 +460,20 @@ export default function Projects() {
                             ))}
                           </div>
                         </div>
+
+                        <a
+                          href={p.pdf}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="proj-design-btn"
+                          style={{
+                            background: `linear-gradient(135deg, ${p.accent}, ${p.bot})`,
+                            boxShadow: `0 12px 28px ${p.accent}30`,
+                          }}
+                          onClick={(e) => e.stopPropagation()}
+                        >
+                          Download Design
+                        </a>
 
                         <div className="proj-tap-hint md:hidden">tap to go back</div>
                       </div>

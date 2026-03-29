@@ -1,14 +1,36 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
-import { Smartphone, Globe, Zap, Palette, Shield, HeartHandshake } from "lucide-react";
+import { Smartphone, Globe, Shield, HeartHandshake } from "lucide-react";
 
 const SERVICES = [
-  { Icon: Smartphone,     title: "Mobile App Development", accent: "#0284c7", desc: "End-to-end Flutter development for iOS & Android. Custom UI, state management, and full App Store deployment.", features: ["Flutter & Dart", "Cross-platform", "Custom Animations", "App Store Deploy"] },
-  { Icon: Globe,          title: "Web Development",        accent: "#7c3aed", desc: "Modern responsive web apps with Next.js, React, and Tailwind CSS. Fast, SEO-friendly, and pixel-perfect.",       features: ["Next.js & React", "Tailwind CSS", "SEO Optimized", "Custom Deployment"] },
-  { Icon: Zap,            title: "Firebase & Supabase",    accent: "#b45309", desc: "Full backend integration — auth, real-time databases, cloud storage, and push notifications.",                       features: ["Auth & Users", "Real-time DB", "Cloud Storage", "Push Notifications"] },
-  { Icon: Palette,        title: "UI/UX Design",           accent: "#be185d", desc: "Figma prototypes to pixel-perfect implementation. Beautiful interfaces with smooth animations.",                     features: ["Figma Prototyping", "Animations", "Dark/Light Themes", "Responsive Layouts"] },
-  { Icon: Shield,         title: "Maintenance & Support",  accent: "#047857", desc: "Ongoing bug fixes, OS update compatibility, performance tuning, and new feature additions.",                         features: ["Bug Fixing", "Performance", "OS Compatibility", "Feature Updates"] },
-  { Icon: HeartHandshake, title: "Custom Solutions",       accent: "#6d28d9", desc: "Unique idea? I build custom mobile and web solutions tailored exactly to your requirements.",                         features: ["Requirement Analysis", "Custom Architecture", "Scalable Code", "Full Docs"] },
+  { 
+    Icon: Smartphone, 
+    title: "Mobile App Development", 
+    accent: "#0284c7", 
+    desc: "End-to-end Flutter development for iOS & Android. Custom UI, state management, and full App Store deployment.", 
+    features: ["Flutter & Dart", "Cross-platform", "Custom Animations", "App Store Deploy"] 
+  },
+  { 
+    Icon: Globe, 
+    title: "Web Development", 
+    accent: "#7c3aed", 
+    desc: "Modern responsive web apps with Next.js, React, and Tailwind CSS. Fast, SEO-friendly, and pixel-perfect.", 
+    features: ["Next.js & React", "Tailwind CSS", "SEO Optimized", "Custom Deployment"] 
+  },
+  { 
+    Icon: Shield, 
+    title: "Maintenance & Support", 
+    accent: "#047857", 
+    desc: "Ongoing bug fixes, OS update compatibility, performance tuning, and new feature additions.", 
+    features: ["Bug Fixing", "Performance", "OS Compatibility", "Feature Updates"] 
+  },
+  { 
+    Icon: HeartHandshake, 
+    title: "Custom Solutions", 
+    accent: "#6d28d9", 
+    desc: "Unique idea? I build custom mobile and web solutions tailored exactly to your requirements.", 
+    features: ["Requirement Analysis", "Custom Architecture", "Scalable Code", "Full Docs"] 
+  },
 ];
 
 export default function Services() {
@@ -18,6 +40,7 @@ export default function Services() {
   const ref = useRef<HTMLElement>(null);
 
   useEffect(() => { setMounted(true); }, []);
+
   useEffect(() => {
     if (!mounted || !ref.current) return;
     const obs = new IntersectionObserver(
@@ -40,7 +63,7 @@ export default function Services() {
           transition: opacity 0.65s ease, transform 0.65s ease;
         }
         .svc-reveal.in { opacity: 1; transform: translateY(0); }
-
+        
         /* Service card */
         .svc-card {
           background: var(--bg-card);
@@ -193,8 +216,8 @@ export default function Services() {
             </h2>
           </div>
 
-          {/* Service cards grid */}
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5 mb-12">
+          {/* Service cards grid (Updated to 2 columns specifically) */}
+          <div className="grid md:grid-cols-2 gap-6 lg:gap-8 mb-16">
             {SERVICES.map((s, i) => (
               <div
                 key={s.title}

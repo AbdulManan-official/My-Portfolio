@@ -77,7 +77,7 @@ export default function Contact() {
           font-weight: 700;
           letter-spacing: 0.14em;
           text-transform: uppercase;
-          color: var(--text-muted);
+          color: var(--text-primary);
           font-family: var(--font-display);
           margin-bottom: 8px;
         }
@@ -96,7 +96,7 @@ export default function Contact() {
           resize: none;
           transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
         }
-        .contact-input::placeholder { color: var(--text-muted); }
+        .contact-input::placeholder { color: var(--text-primary); opacity: 0.62; }
         .contact-input:focus {
           border-color: var(--border-glow);
           box-shadow: 0 0 0 3px rgba(99,228,255,0.08);
@@ -195,7 +195,7 @@ export default function Contact() {
           text-transform: uppercase;
           letter-spacing: 0.12em;
           font-weight: 700;
-          color: var(--text-muted);
+          color: var(--text-primary);
           font-family: var(--font-display);
           margin-bottom: 2px;
         }
@@ -210,7 +210,7 @@ export default function Contact() {
         }
         .contact-info-arrow {
           margin-left: auto;
-          color: var(--text-muted);
+          color: var(--text-primary);
           flex-shrink: 0;
           transition: transform 0.3s ease;
         }
@@ -236,7 +236,7 @@ export default function Contact() {
         .contact-social-label {
           font-size: 11px;
           font-weight: 600;
-          color: var(--text-muted);
+          color: var(--text-primary);
           font-family: var(--font-display);
         }
 
@@ -291,7 +291,7 @@ export default function Contact() {
             <h2 style={{ fontFamily: "var(--font-display)", fontWeight: 800, fontSize: "clamp(2rem,4vw,3rem)", color: "var(--text-primary)" }}>
               Let&apos;s Build <span className="text-gradient">Something Great</span>
             </h2>
-            <p style={{ marginTop: 8, fontSize: 14, color: "var(--text-muted)", maxWidth: 480, margin: "8px auto 0", lineHeight: 1.75, fontFamily: "var(--font-body)" }}>
+            <p style={{ marginTop: 8, fontSize: 14, color: "var(--text-primary)", maxWidth: 480, margin: "8px auto 0", lineHeight: 1.75, fontFamily: "var(--font-body)" }}>
               Have a project in mind? Drop me a message — I usually reply within 24 hours.
             </p>
           </div>
@@ -422,24 +422,12 @@ export default function Contact() {
                 ))}
               </div>
 
-              {/* Availability */}
-              <div className="contact-avail">
-                <div className="contact-avail-dot" />
-                <div>
-                  <div style={{ fontSize: 12, fontWeight: 700, color: "#34d399", fontFamily: "var(--font-display)", marginBottom: 3 }}>
-                    Available for Freelance
-                  </div>
-                  <div style={{ fontSize: 12, color: "var(--text-muted)", fontFamily: "var(--font-body)", lineHeight: 1.6 }}>
-                    Open to new projects alongside full-time work.
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
 
           {/* Footer */}
-          <div className="contact-footer">
-            © {new Date().getFullYear()} Abdul Manan · Built with Next.js & Tailwind CSS
+          <div className="contact-footer" style={{ color: "var(--text-primary)" }}>
+            © {new Date().getFullYear()} Abdul Manan 
           </div>
         </div>
       </section>
