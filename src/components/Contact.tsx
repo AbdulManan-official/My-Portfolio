@@ -32,14 +32,42 @@ export default function Contact() {
     e.preventDefault();
     if (!validate()) return;
     setStatus("loading");
+
     try {
-      const r = await submitContactForm(form);
-      if (r.success) {
+      // 1. Submit to Firebase (Your existing logic)
+      const firebaseRes = await submitContactForm(form);
+
+      // 2. Submit to Web3Forms (New logic)
+      const web3Response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({
+          access_key: "42af0209-f329-4e96-ba5a-4fbafd322a00",
+          name: form.name,
+          email: form.email,
+          message: form.message,
+          subject: `New Portfolio Message from ${form.name}`,
+        }),
+      });
+
+      const web3Result = await web3Response.json();
+
+      // If either succeeds, we consider it a success for the user
+      if (firebaseRes.success || web3Result.success) {
         setStatus("success");
         setForm({ name: "", email: "", message: "" });
         setErrors({ name: "", email: "", message: "" });
-      } else { setStatus("error"); setTimeout(() => setStatus("idle"), 3000); }
-    } catch { setStatus("error"); setTimeout(() => setStatus("idle"), 3000); }
+      } else {
+        throw new Error("Both services failed");
+      }
+    } catch (err) {
+      console.error("Submission error:", err);
+      setStatus("error");
+      setTimeout(() => setStatus("idle"), 3000);
+    }
   };
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -277,7 +305,6 @@ export default function Contact() {
       <section id="contact" className="relative py-24 overflow-hidden grid-bg"
         style={{ background: "var(--bg-secondary)" }}>
 
-        {/* Orbs */}
         <div className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full pointer-events-none"
           style={{ background: "radial-gradient(circle,rgba(99,228,255,0.05),transparent)", filter: "blur(80px)" }} />
         <div className="absolute bottom-1/4 right-1/4 w-96 h-96 rounded-full pointer-events-none"
@@ -285,7 +312,6 @@ export default function Contact() {
 
         <div className="relative z-10 max-w-7xl mx-auto px-5 lg:px-8">
 
-          {/* Header — no JS visibility needed, always visible as it's at bottom of page */}
           <div className="text-center mb-14">
             <div className="section-label justify-center mb-4">Get in Touch</div>
             <h2 style={{ fontFamily: "var(--font-display)", fontWeight: 800, fontSize: "clamp(2rem,4vw,3rem)", color: "var(--text-primary)" }}>
@@ -298,7 +324,6 @@ export default function Contact() {
 
           <div className="grid lg:grid-cols-2 gap-10 md:gap-14 items-start">
 
-            {/* ── FORM ── */}
             <div className="contact-form-card">
               {status === "success" ? (
                 <div className="contact-success">
@@ -308,7 +333,7 @@ export default function Contact() {
                     </svg>
                   </div>
                   <h3 className="text-gradient" style={{ fontFamily: "var(--font-display)", fontWeight: 800, fontSize: "1.5rem" }}>
-                    Message Sent!
+                    Thanks for your Message has been sent!
                   </h3>
                   <p style={{ fontSize: 14, color: "var(--text-secondary)", fontFamily: "var(--font-body)", lineHeight: 1.7 }}>
                     Thanks for reaching out. I&apos;ll get back to you shortly.
@@ -319,8 +344,6 @@ export default function Contact() {
                 </div>
               ) : (
                 <form onSubmit={submit} style={{ display: "flex", flexDirection: "column", gap: 20 }}>
-
-                  {/* Name */}
                   <div>
                     <label className="contact-label">Name</label>
                     <input
@@ -331,7 +354,6 @@ export default function Contact() {
                     {errors.name && <p className="contact-error">⚠ {errors.name}</p>}
                   </div>
 
-                  {/* Email */}
                   <div>
                     <label className="contact-label">Email</label>
                     <input
@@ -342,7 +364,6 @@ export default function Contact() {
                     {errors.email && <p className="contact-error">⚠ {errors.email}</p>}
                   </div>
 
-                  {/* Message */}
                   <div>
                     <label className="contact-label">Message</label>
                     <textarea
@@ -353,7 +374,6 @@ export default function Contact() {
                     {errors.message && <p className="contact-error">⚠ {errors.message}</p>}
                   </div>
 
-                  {/* Submit */}
                   <button type="submit" disabled={status === "loading"} className="contact-submit">
                     {status === "loading" ? (
                       <>
@@ -365,7 +385,6 @@ export default function Contact() {
                     )}
                   </button>
 
-                  {/* Error state */}
                   {status === "error" && (
                     <div style={{ padding: "12px 16px", borderRadius: 12, background: "rgba(239,68,68,0.1)", border: "1px solid rgba(239,68,68,0.3)", color: "#f87171", fontSize: 13, textAlign: "center", fontFamily: "var(--font-body)" }}>
                       Failed to send. Please try again or email me directly.
@@ -375,10 +394,7 @@ export default function Contact() {
               )}
             </div>
 
-            {/* ── RIGHT ── */}
             <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-
-              {/* Contact info rows */}
               {INFO.map(info => (
                 <a key={info.label} href={info.href} className="contact-info-row"
                   style={{ "--hover-accent": info.accent } as React.CSSProperties}
@@ -399,7 +415,6 @@ export default function Contact() {
                 </a>
               ))}
 
-              {/* Social cards */}
               <div className="grid grid-cols-3 gap-3">
                 {SOCIALS.map(s => (
                   <a key={s.label} href={s.href} target="_blank" rel="noopener noreferrer"
@@ -415,17 +430,14 @@ export default function Contact() {
                       el.style.boxShadow = "none";
                     }}
                   >
-                    <s.Icon size={22} style={{ color: s.accent, transition: "transform 0.35s cubic-bezier(0.34,1.56,0.64,1)" }}
-                      className="group-hover:scale-110" />
+                    <s.Icon size={22} style={{ color: s.accent, transition: "transform 0.35s cubic-bezier(0.34,1.56,0.64,1)" }} />
                     <span className="contact-social-label">{s.label}</span>
                   </a>
                 ))}
               </div>
-
             </div>
           </div>
 
-          {/* Footer */}
           <div className="contact-footer" style={{ color: "var(--text-primary)" }}>
             © {new Date().getFullYear()} Abdul Manan 
           </div>
